@@ -1,0 +1,17 @@
+{
+    "name": "sparkplugtranslationmodule",
+    "version": "0.0.1",
+    "description": "Azure IoT Edge Node.js module sample project",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Azure/generator-azure-iot-edge-module"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "azure-iot-device": "^1.17.4",
+        "azure-iot-device-mqtt": "^1.15.4",
+        "sparkplug-payload": "^1.0.1",
+        "azure-storage": "^2.10.3",
+        "mqtt": "^3.0.0"
+    }
+}

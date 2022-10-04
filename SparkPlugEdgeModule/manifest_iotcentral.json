@@ -1,0 +1,86 @@
+{
+    "modulesContent": {
+        "$edgeAgent": {
+            "properties.desired": {
+                "schemaVersion": "1.1",
+                "runtime": {
+                    "type": "docker",
+                    "settings": {
+                        "minDockerVersion": "v1.25",
+                        "loggingOptions": "",
+                        "registryCredentials": {
+                            "iotcentralsparkplugb": {
+                                "address": "YOUR_ADDRESS_ACR.azurecr.io",
+                                "password": "YOUR_PASSWORD_ACR",
+                                "username": "YOUR_USERNAME_ACR"
+                            }
+                        }
+                    }
+                },
+                "systemModules": {
+                    "edgeAgent": {
+                        "env": {
+                            "SendRuntimeQualityTelemetry": {
+                                "value": false
+                            }
+                        },
+                        "settings": {
+                            "image": "mcr.microsoft.com/azureiotedge-agent:1.1"
+                        },
+                        "type": "docker"
+                    },
+                    "edgeHub": {
+                        "restartPolicy": "always",
+                        "settings": {
+                            "image": "mcr.microsoft.com/azureiotedge-hub:1.1",
+                            "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"443/tcp\":[{\"HostPort\":\"443\"}],\"5671/tcp\":[{\"HostPort\":\"5671\"}],\"8883/tcp\":[{\"HostPort\":\"8883\"}]}}}"
+                        },
+                        "status": "running",
+                        "type": "docker"
+                    }
+                },
+                "modules": {
+                    "SparkPlugTranslationModule": {
+                        "env": {
+                            "econfig": {
+                                "value": "{\"ip\":\"YOUR_SERVER_MQTT\",\"topics\":[\"spBv1.0/YOUR_DEVICES/DDATA/YOUR_DEVICE_OR_#_FOR_COMODIN\"]}"
+                            }
+                        },
+                        "restartPolicy": "always",
+                        "startupOrder": 200,
+                        "settings": {
+                            "image": "YOUR_ADDRESS_ACR.azurecr.io/sparkplugtranslationmodule:1.0.0-amd64"
+                        },
+                        "status": "running",
+                        "type": "docker",
+                        "version": "1.0"
+                    },
+                    "MosquittoModulev2": {
+                        "version": "1.0",
+                        "type": "docker",
+                        "status": "running",
+                        "restartPolicy": "always",
+                        "startupOrder": 100,
+                        "settings": {
+                          "image": "${MODULES.MosquittoModulev2}",
+                          "createOptions": "{\"Hostname\":\"mosquitto\",\"Cmd\":[\"/usr/sbin/mosquitto\",\"-c\",\"/mosquitto/config/mosquitto.conf\"],\"HostConfig\":{\"PortBindings\":{\"1883/tcp\":[{\"HostPort\":\"1883\"}]}}}"
+                        }
+                      }
+                }
+            }
+        },
+        "$edgeHub": {
+            "properties.desired": {
+                "schemaVersion": "1.1",
+                "routes": {
+                    "RouteSparkPlugTranslationModule": {
+                        "route": "FROM /messages/modules/SparkPlugTranslationModule/outputs/* INTO $upstream"
+                    }
+                }
+            }
+        },
+        "SparkPlugTranslationModule": {
+            "properties.desired": {}
+        }
+    }
+}

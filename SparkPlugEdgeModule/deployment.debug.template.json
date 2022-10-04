@@ -1,0 +1,106 @@
+{
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired": {
+        "schemaVersion": "1.1",
+        "runtime": {
+          "type": "docker",
+          "settings": {
+            "minDockerVersion": "v1.25",
+            "loggingOptions": "",
+            "registryCredentials": {
+              "iotcentralsparkplugb": {
+                "address": "YOUR_ADDRESS_ACR.azurecr.io",
+                "password": "YOUR_PASSWORD_ACR",
+                "username": "YOUR_USERNAME_ACR"
+              },
+              "msftpathracr": {
+                "username": "$CONTAINER_REGISTRY_USERNAME_msftpathracr",
+                "password": "$CONTAINER_REGISTRY_PASSWORD_msftpathracr",
+                "address": "msftpathracr.azurecr.io"
+              }
+            }
+          }
+        },
+        "systemModules": {
+          "edgeAgent": {
+            "env": {
+              "SendRuntimeQualityTelemetry": {
+                "value": false
+              }
+            },
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.1"
+            },
+            "type": "docker"
+          },
+          "edgeHub": {
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.1",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"443/tcp\":[{\"HostPort\":\"443\"}],\"5671/tcp\":[{\"HostPort\":\"5671\"}],\"8883/tcp\":[{\"HostPort\":\"8883\"}]}}}"
+            },
+            "status": "running",
+            "type": "docker"
+          }
+        },
+        "modules": {
+          "SparkPlugTranslationModule": {
+            "env": {
+              "econfig": {
+                "value": "{\"ip\":\"YOUR_SERVER_MQTT\",\"topics\":[\"spBv1.0/YOUR_DEVICES/DDATA/YOUR_DEVICE_OR_#_FOR_COMODIN\"]}"
+              }
+            },
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.SparkPlugTranslationModule.debug}"
+            },
+            "status": "running",
+            "type": "docker",
+            "version": "1.0"
+          },
+          "httpsModule": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.httpsModule.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "9229/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "9229/tcp": [
+                      {
+                        "HostPort": "9229"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "$edgeHub": {
+      "properties.desired": {
+        "schemaVersion": "1.1",
+        "routes": {
+          "RouteSparkPlugTranslationModule": {
+            "route": "FROM /messages/modules/SparkPlugTranslationModule/outputs/* INTO $upstream"
+          },
+          "httpsModuleToIoTHub": "FROM /messages/modules/httpsModule/outputs/* INTO $upstream"
+        },
+        "storeAndForwardConfiguration": {
+          "timeToLiveSecs": 7200
+        }
+      }
+    },
+    "SparkPlugTranslationModule": {
+      "properties.desired": {}
+    }
+  }
+}
