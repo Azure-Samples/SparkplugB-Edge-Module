@@ -8,8 +8,6 @@ In this article, we will briefly introduce SparkPlug B and explain how to implem
 
 ![Diagram  Description automatically generated](/assets/images/clip_image001.png)
 
- ![image-20220815003913045](/Users/armbla/Documents/IoT/SparkplugB-Edge-Module/assets/images/clip_image001.png)
-
 ## What is Sparkplug B?
 
 Sparkplug B is an Open-Source specification designed based on the characteristic features of IoT applications. It helps define topics and message payload that are not specified by standard MQTT and allows non-MQTT terminal devices to transfer data with MQTT Server through Edge of Network.
