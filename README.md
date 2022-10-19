@@ -149,7 +149,7 @@ Here is an example of a simple spBv1.0 payload decoded into JSON:
 }
 ```
 
-# Solution implementation 
+# Installation 
 
 In the next section, we will prepare, configure and deploy the whole solution. It is assumed that certain parts, such as preparing the Linux and creating the IoT Hub service, are ready, given other articles explaining the step-by-step process.
 
@@ -249,23 +249,19 @@ The module expects the following configurations
 
  
 
-## Prepare the manifest for IoT Central
+## Prepare the deployment manifest for IoT Hub
 
-Configure Device Module. When the IoT Edge runtime connects to your IoT Central application, it downloads the deployment manifest. The runtime uses the information in the deployment manifest to determine which modules to install and how to configure them. Modules download from a container registry such as Azure Container Registry. 
+Configure Device Module. When the IoT Edge runtime connects to your IoT Hub application, it downloads the deployment manifest. The runtime uses the information in the deployment manifest to determine which modules to install and how to configure them. Modules download from a container registry such as Azure Container Registry. 
 
-The deployment manifest you used installs the two required system modules, edgeAgent and edgeHub, and two custom modules SparkPlugB and MQTT edge module. This custom module sends ambient and machine telemetry to IoT Central and has the following properties, that an operator can use to configure the module:
+The deployment manifest you used installs the two required system modules, edgeAgent and edgeHub, and two custom modules SparkPlugB and MQTT edge module.
 
-1. Take the “manifest_iotcentral.json” 
-
-2. Update the ACR credentials 
+1. Update the deployment manifest, you need to add your ACR credentials and 
 
 ![Text  Description automatically generated](/assets/images/clip_image010.png)
 
- 
+2. Adjust the “config” section:
 
-3. Adjust the “config” section:
-
-Ip or dns server of mqtt: **for testing use** TEST.MOSQUITTO.ORG
+Ip or dns server of the mqtt broker: **for testing use** TEST.MOSQUITTO.ORG
 
 Topics: **for testing use** spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS
 
@@ -280,8 +276,6 @@ For better understanding of the configuration think in this json format
 Finally, to insert the variable into the manifest replace '' with '' \, all within double quotes
 
 `"{\"ip\":\"MQTT_DNS_OR_IP\",\"topics\":[\"spBv1.0/ADD_ESPECIFIC_TOPICS_N1\",\"spBv1.0/spBv1.0/ADD_ESPECIFIC_TOPICS_N2\"]}"`
-
- 
 
 ![A picture containing text  Description automatically generated](/assets/images/clip_image012.png)
 
@@ -301,73 +295,14 @@ Check ACR image version
 
  
 
-Install IoT Edge and connect with IoT Central, see 
+Today a pretty similar code is running in production for Oil & Gas customers 
 
-https://docs.microsoft.com/en-us/learn/modules/connect-iot-edge-device-to-iot-central/
-
-https://docs.microsoft.com/en-us/learn/modules/connect-iot-edge-device-to-iot-central/4-deploy-iot-edge-to-virtual-machine
-
-https://docs.microsoft.com/en-us/learn/modules/connect-iot-edge-device-to-iot-central/
-
- 
-
-1. Create the device template
-
- 
-
-![Graphical user interface, application, Teams  Description automatically generated](/assets/images/clip_image014.png)
-
- 
-
-2. Upload the file “manifest_iotcentral.json” to iot central
-
- 
-
-![Graphical user interface, text, application, email  Description automatically generated](/assets/images/clip_image015.png)
-
-3. Click in create button, apply this template to the IoT edge and see the telemetry sparkplug B.
-
-![Graphical user interface, text, application  Description automatically generated](/assets/images/clip_image016.png)
-
- 
-
-Today this code is running in production for two customers of Oil & Gas 
-
-Tested scenarios: 
-
-·   Working in ubuntu 18.04 tls, 20.04 tls ok 
-
-·   Working in windows 10 EFLOW ok 
 
 ## For testing 
 
 For testing we are using a MQTT cliente to send telemetry to the MQTT edge module using https://test.mosquitto.org/ and the topic spark plug B v1.0 “spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS” 
 
 ![Text  Description automatically generated](/assets/images/clip_image017.png) 
-
-# Appendix – Configuration on IoT Central
-
- 
-
-1. Publish the device template.
-
- 
-
-![Graphical user interface, text, application  Description automatically generated](/assets/images/clip_image018.png)
-
-2. Create the device![Graphical user interface, application, Word  Description automatically generated](/assets/images/clip_image019.png)
-
- 
-
-3. Open the device![Graphical user interface, text, application, email  Description automatically generated](/assets/images/clip_image020.png)
-
-![Graphical user interface, text  Description automatically generated](/assets/images/clip_image021.png)
-
-4. Open connect and copy the information for DPS enrollment
-
- 
-
-![Graphical user interface, text, application  Description automatically generated](/assets/images/clip_image022.png)
 
  
 
@@ -381,52 +316,4 @@ For testing we are using a MQTT cliente to send telemetry to the MQTT edge modul
 
 `sudo nano /etc/iotedge/config.yaml`
 
- 
-
 ![Text  Description automatically generated](/assets/images/clip_image023.png)
-
- Add your IOT Central configuration
-
-  `# DPS symmetric key provisioning configuration  provisioning:    source:  "dps"    global_endpoint:  "https://global.azure-devices-provisioning.net"    scope_id:  "<SCOPE_ID>"    attestation:     method:  "symmetric_key"       registration_id: "<REGISTRATION_ID>"     symmetric_key:  "<SYMMETRIC_KEY>"`  
-
- 
-
-![Text  Description automatically generated](/assets/images/clip_image024.png)
-
- 
-
-7. Apply the changes
-
-sudo iotedge system apply
-
-![Text  Description automatically generated](/assets/images/clip_image025.png)
-
- 
-
-8. Check the modules in the iotedge
-
-`sudo systemctl status iotedge`
-
- 
-
-![img](/assets/images/clip_image026.png)
-
- 
-
-9. Check iot central modules running ok![Graphical user interface, text, application, Teams  Description automatically generated](/assets/images/clip_image027.png)
-
-10. Now you can see the telemetry on IoT Central and now we can use export or connect with other tools for example Azure Data Explorer, DataLakeGen2, etc.
-
-![Graphical user interface, application  Description automatically generated](/assets/images/clip_image028.png) 
-
-![Graphical user interface, application  Description automatically generated](/assets/images/clip_image029.png)
-
- 
-
-![A screenshot of a computer  Description automatically generated](/assets/images/clip_image030.png)
-
- 
-
-11. Validate the IoT Edge logs of the custom module running in the iotedge
-
-![Text  Description automatically generated](/assets/images/clip_image031.png)
