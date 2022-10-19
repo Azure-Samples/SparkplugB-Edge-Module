@@ -4,7 +4,7 @@
 
 The use of SparkPlug B and MQTT is used in the Industrial World; in specific sectors such as Oil & Gas, Energy, and manufacturing. Devices such as PLCs, SCADAS, and Gateways that can transmit telemetry through of MQTT using the SparkPlug B format to obtain different advantages.
 
-In this article, we will briefly introduce SparkPlug B and explain how to implement an IoT Edge module to subscribe to an MQTT broker, process messages in Sparkplug format, and send them to the Azure IoT platform decoded in JSON. Once the data is in IoT Central, we can monitor it in real-time and enable continuous data export to Azure Data Explorer to expand reporting and analytics capabilities with the data.
+In this article, we will briefly introduce SparkPlug B and explain how to implement an IoT Edge module to subscribe to an MQTT broker, process messages in Sparkplug format, and send them to the Azure IoT platform decoded in JSON. Once the data is in IoT Hub, we can monitor it in real-time and enable continuous data export to Azure Data Explorer to expand reporting and analytics capabilities with the data.
 
 ![Diagram  Description automatically generated](/assets/images/clip_image001.png)
 
