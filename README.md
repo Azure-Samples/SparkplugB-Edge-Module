@@ -82,8 +82,6 @@ This architecture, is described the different components that we will use in the
 
 ![Chart  Description automatically generated](/assets/images/clip_image003.png)
 
-![image-20220815004009659](/Users/armbla/Documents/IoT/SparkplugB-Edge-Module/assets/images/clip_image003.png)
-
 ## Dataflow 
 
 1. Devices that produce telemetry in SparkPlug B format, typically are PLC, Gateway, and SCADA system enabled with this format
@@ -96,7 +94,7 @@ This architecture, is described the different components that we will use in the
 
 5. SparkPlug B Module. This module will transform the Sparkplug B format to JSON in plain text
 
-6. IoT Central 
+6. Azure IoT Hub
 
 7. Azure Data Explorer
 
