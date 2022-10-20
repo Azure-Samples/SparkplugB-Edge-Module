@@ -61,11 +61,11 @@ Here are some of the benefits of using MQTT and Sparkplug B
 
 This article explains how we can deploy an IoT Edge module that is able to connect to the MQTT broker, read the messages in a Sparkplug B format and send them to IoT Hub to store and get insights from the information collected. In addition, we will show how to export this information to an Azure Data Explorer service in order to create reports and analytics using this data.
 
-## Data Flow
+## Dataflow
 
-It is common to find a wide variety of devices connected in an industrial network such as: Modbus equipment (TCP or RTU), Sensors, IoT devices, and others; all this equipment is connected to PLCs or SCADAs. It is also very likely that many of these final devices use MQTT with sparkplugb so all telemetria will have this format.
+It is common to find a wide variety of devices connected in an industrial network, such as Modbus equipment (TCP or RTU), sensors, IoT devices, and others. In addition, many of those devices use MQTT and SparkPlugB to create interfaces to exchange information to other systems like SCADAS, PLCs, or IoT Platforms.
 
- We are going to enable a Gateway with IoT Edge installed; this can be a VM or a physical device; the solution installed on the IoT Edge will provide an MQTT broker based on the Open source Mosquitto; in this document, we will use the MQTT Broker edge module, but there are different options to do it, like installing an MQTT Broker in the OS, but it supposes a double administration.
+ We are going to enable a Gateway with IoT Edge; this can be a VM or a physical device; the solution installed on the IoT Edge will provide an MQTT broker based on the Open source Mosquitto; in this document, we will use the MQTT Broker edge module, but there are different options to do it, like installing an MQTT Broker in the OS, but it supposes a double administration.
 
 IoT Edge will collect the data and, through the Sparkplug Decoding Module, it will:
 1. Receive it in SparkPlug B format and decode it as a JSON
@@ -84,7 +84,7 @@ Following architecture describes the different components that we will use in th
 
 ![Chart  Description automatically generated](/assets/images/clip_image003.png)
 
-## Dataflow 
+### Workflow 
 
 1. Devices that produce telemetry in SparkPlug B format, typically are PLC, Gateways, and SCADA systems.
 
