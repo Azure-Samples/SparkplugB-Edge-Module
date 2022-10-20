@@ -18,7 +18,6 @@ One of the fundamental advantages of using SparkPlug B over MQTT is that bandwid
 
 For more information on the Sparkplug B specification, see https://projects.eclipse.org/projects/iot.sparkplug
 
-##  
 
 ## Use cases
 
@@ -81,7 +80,7 @@ IoT Edge will collect the data and, through the Sparkplug Decoding Module, it wi
 
 ## Architecture
 
-Following architecture describes the different components that we will use in the solution.
+Following architecture describes the different components that we will use in this the solution.
 
 ![Chart  Description automatically generated](/assets/images/clip_image003.png)
 
@@ -157,11 +156,9 @@ In the next section, we will prepare, configure and deploy the whole solution. I
 
 ## Build and push Module in ACR
 
-Tutorial to build and push modules, see
+For more information about how to build and push modules, please see [publish and deploy modules](https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-machine-learning-edge-06-custom-modules?view=iotedge-2020-11#build-publish-and-deploy-modules) 
 
-https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-machine-learning-edge-06-custom-modules?view=iotedge-2020-11#build-publish-and-deploy-modules 
-
-1. Get the ACR (Azure Container Registry) credentials
+1. Create and get the Azure Container Registry credentials
 
 ![Graphical user interface, text, application  Description automatically generated](/assets/images/clip_image005.png)
 
@@ -195,11 +192,11 @@ git clone https://github.com/iotrockstars/SparkplugB-Edge-Module
 
 ##  
 
-## Configuring MQTT Broker Edge Module
+## Configure MQTT Broker Edge Module
 
 ### Description
 
-Typically, when there is MQTT messaging, brokers installed in the operating system are used, the problem is that there is double administration, on the one hand, the IoT Edge runtime and its modules, and at the operating system level, the MQTT broker Edge Module, an MQTT broker has been created experimentally based on Mosquitto to be implemented at the Azure IoT Edge runtime.
+In order to simplify the solution administration, and install and update the MQTT Broker remotely, we created an experimentally Edge Module with an MQTT Broker based on Mosquitto to be implemented at the Azure IoT Edge runtime.
 
 ### Configuration
 
@@ -249,10 +246,6 @@ You need to define a new Environment Variable
 
 Example: {"ip":"test.mosquitto.org","topics":["spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS"]}
  
-Ip or dns server of the mqtt broker: **for testing use** TEST.MOSQUITTO.ORG
-
-Topics: **for testing use** spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS
-
 Tip: remember that can use willcard with #: **for testing use** spBv1.0/SparkplugDevices/DDATA/#
 
 
