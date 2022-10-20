@@ -196,7 +196,7 @@ git clone https://github.com/iotrockstars/SparkplugB-Edge-Module
 
 ### Description
 
-In order to simplify the solution administration, and install and update the MQTT Broker remotely, we created an experimentally Edge Module with an MQTT Broker based on Mosquitto to be implemented at the Azure IoT Edge runtime.
+In order to simplify the solution administration, and install and update the MQTT Broker remotely, we created an Edge Module with an MQTT Broker based on Mosquitto to be implemented at the Azure IoT Edge runtime.
 
 ### Configuration
 
