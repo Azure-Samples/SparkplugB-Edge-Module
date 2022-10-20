@@ -166,44 +166,36 @@ https://docs.microsoft.com/en-us/azure/iot-edge/tutorial-machine-learning-edge-0
 ![Graphical user interface, text, application  Description automatically generated](/assets/images/clip_image005.png)
 
  
-
 2. Open Visual Studio Code, create a folder, and run the following command in the terminal in order to download this repo.
 
 ```bash
 git clone https://github.com/iotrockstars/SparkplugB-Edge-Module
 ```
 
- 
 
 3. In the Visual Studio Code project, configure the .env file
 
 ![Graphical user interface  Description automatically generated](/assets/images/clip_image006.png)
 
  
-
 4. Update “version” and “repository”, in “module.json” file
 
 ![Text  Description automatically generated](/assets/images/clip_image007.png)
 
  
-
 5. Save all changes.
 
  
 
 6. Now that we have made the configuration changes, we are ready to build the images and publish them to our Azure container registry. 
 
- 
-
 7. In Visual Studio Code, right-click on “deployment.template.json” file and choose “Build and Push IoT Edge Solution”.
-
- 
 
 ![img](/assets/images/clip_image008.png)
 
 ##  
 
-## MQTT Broker Edge Module
+## Configuring MQTT Broker Edge Module
 
 ### Description
 
@@ -215,22 +207,22 @@ Typically, when there is MQTT messaging, brokers installed in the operating syst
 
 `"createOptions": "{\"Hostname\":\"mosquitto\",\"Cmd\":[\"/usr/sbin/mosquitto\",\"-c\",\"/mosquitto/config/mosquitto.conf\"],\"HostConfig\":{\"PortBindings\":{\"1883/tcp\":[{\"HostPort\":\"1883\"}]}}}"`
 
+Important. If you require to change the configuration of the MQTT Broker, like authentication, enable or disable anonymous access, port, or another, you can do that in the mosquito.config file.
+
 Once the solution is implemented, its operation can be verified by performing a telnet command to the device's hostname with the configured port.
 
 ```bash
 telnet myserver 1883
 ```
- 
 
 ![Text  Description automatically generated](/assets/images/clip_image009.png)
 
- 
-
-Other tests that can be done are with an MQTT client to verify communication and the configuration.
+Also, you could use an MQTT client to perform tests to verify communication and the configuration.
 
 ### Routing
 
 This module has no logic attached to the routing input or output.
+
 
 ## Sparkplug B Module
 
@@ -238,82 +230,39 @@ This module has no logic attached to the routing input or output.
 
 This module will be in charge of connecting with the MQTT Edge module through the defined port; it will subscribe to the specified topics, and the module can transform from Sparkplug to Json in plain text.
 
-## Configuration
+### Configuration
 
-The module expects the following configurations
+The module expects the following configurations in the module's Environment Variables
 
 |            |                                                              |                                                          |
 | ---------- | ------------------------------------------------------------ | -------------------------------------------------------- |
 | **Ip**     | Hostname or IP of the server where the IoT Edge is  installed | myserver                                                 |
 | **topics** | List of topics to subscribe. If you want to subscribe all leave  # | "spBv1.0/YOUR_DEVICES/DDATA/YOUR_DEVICE_OR_#_FOR_COMODIN |
 
+You need to define a new Environment Variable
+
+* Name: econfig
+
+* Type: Text
+
+* Value: {"ip":"<IP/DNS of your MQTT Broker Module>","topics":[<list of topics separated by a semicolon>]}
+
+Example: {"ip":"test.mosquitto.org","topics":["spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS"]}
  
-
-## Prepare the deployment manifest for IoT Hub
-
-Configure Device Module. When the IoT Edge runtime connects to your IoT Hub application, it downloads the deployment manifest. The runtime uses the information in the deployment manifest to determine which modules to install and how to configure them. Modules download from a container registry such as Azure Container Registry. 
-
-The deployment manifest you used installs the two required system modules, edgeAgent and edgeHub, and two custom modules SparkPlugB and MQTT edge module.
-
-1. Update the deployment manifest, you need to add your ACR credentials and 
-
-![Text  Description automatically generated](/assets/images/clip_image010.png)
-
-2. Adjust the “config” section:
-
 Ip or dns server of the mqtt broker: **for testing use** TEST.MOSQUITTO.ORG
 
 Topics: **for testing use** spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS
 
 Tip: remember that can use willcard with #: **for testing use** spBv1.0/SparkplugDevices/DDATA/#
 
-For better understanding of the configuration think in this json format
 
-```json
-  {    "ip": "<myserver>",    "topics":[      "spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS",       "spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS2"    ]  } 
-````
+## Test the solution
 
-Finally, to insert the variable into the manifest replace '' with '' \, all within double quotes
-
-`"{\"ip\":\"MQTT_DNS_OR_IP\",\"topics\":[\"spBv1.0/ADD_ESPECIFIC_TOPICS_N1\",\"spBv1.0/spBv1.0/ADD_ESPECIFIC_TOPICS_N2\"]}"`
-
-![A picture containing text  Description automatically generated](/assets/images/clip_image012.png)
-
- 
-
-Check ACR image version 
-
-![A picture containing text  Description automatically generated](/assets/images/clip_image013.png)
-
- 
-
-4. Save the file for next steps
-
- 
-
-## Create an IoT Hub edge device and deploy the custom modules
-
- 
-
-Today a pretty similar code is running in production for Oil & Gas customers 
-
-
-## For testing 
-
-For testing we are using a MQTT cliente to send telemetry to the MQTT edge module using https://test.mosquitto.org/ and the topic spark plug B v1.0 “spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS” 
+You can test the solution using an MQTT client to send simulated telemetry (In SparkplugB format) to the MQTT edge module. Please use the URL https://test.mosquitto.org/ and filter the topic “spBv1.0/SparkplugDevices/DDATA/JsonScada/DemoVPS”
 
 ![Text  Description automatically generated](/assets/images/clip_image017.png) 
 
- 
+## Resources
 
-5. Install IoT Edge
+* [Installing IoT Edge](https://github.com/Azure/iot-edge-config) 
 
-[Create and provision an IoT Edge device on Linux using symmetric keys - Azure IoT Edge | Microsoft Docs](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-provision-single-device-linux-symmetric?view=iotedge-2018-06&tabs=azure-portal%2Cubuntu)
-
- 
-
-6. In the IoT Edge, open the config file
-
-`sudo nano /etc/iotedge/config.yaml`
-
-![Text  Description automatically generated](/assets/images/clip_image023.png)
