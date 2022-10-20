@@ -200,11 +200,11 @@ In order to simplify the solution administration, and install and update the MQT
 
 ### Configuration
 
- The module configuration will be done through Create Options of the module, so the communication port must be configured, by default is using port 1883, and the service configuration is through the mosquito.conf file
+ The module configuration will be done through Create Options of the module, so the communication port must be configured, default port is 1883, and the service configuration is through the mosquito.conf file
 
 `"createOptions": "{\"Hostname\":\"mosquitto\",\"Cmd\":[\"/usr/sbin/mosquitto\",\"-c\",\"/mosquitto/config/mosquitto.conf\"],\"HostConfig\":{\"PortBindings\":{\"1883/tcp\":[{\"HostPort\":\"1883\"}]}}}"`
 
-Important. If you require to change the configuration of the MQTT Broker, like authentication, enable or disable anonymous access, port, or another, you can do that in the mosquito.config file.
+Important. If you require to change the configuration of the MQTT Broker, such as authentication, enable or disable anonymous access, port, or another, you can do that in the mosquito.config file.
 
 Once the solution is implemented, its operation can be verified by performing a telnet command to the device's hostname with the configured port.
 
@@ -214,7 +214,7 @@ telnet myserver 1883
 
 ![Text  Description automatically generated](/assets/images/clip_image009.png)
 
-Also, you could use an MQTT client to perform tests to verify communication and the configuration.
+Also, you could use an MQTT client to perform tests to verify communication and configuration.
 
 ### Routing
 
