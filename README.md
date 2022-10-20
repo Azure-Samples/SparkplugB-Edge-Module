@@ -59,7 +59,7 @@ Here are some of the benefits of using MQTT and Sparkplug B
 
 ·   Low Administration
 
-This article explains how we can deploy an IoT Edge module that is able to connect to the MQTT broker, read the messages in a Sparkplug B format and send them to IoT Hub to monitor the messages. In addition, we will show how to export this information to an Azure Data Explorer service in order to create reports and analytics using this data.
+This article explains how we can deploy an IoT Edge module that is able to connect to the MQTT broker, read the messages in a Sparkplug B format and send them to IoT Hub to store and get insights from the information collected. In addition, we will show how to export this information to an Azure Data Explorer service in order to create reports and analytics using this data.
 
 ## Data Flow
 
