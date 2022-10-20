@@ -80,7 +80,7 @@ IoT Edge will collect the data and, through the Sparkplug Decoding Module, it wi
 
 ## Architecture
 
-Following architecture describes the different components that we will use in this the solution.
+Following architecture describes the different components that we will use in this solution.
 
 ![Chart  Description automatically generated](/assets/images/clip_image003.png)
 
